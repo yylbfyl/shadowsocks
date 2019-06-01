@@ -6,6 +6,7 @@ ENV SERVER_PORT 8388
 ENV PASSWORD=
 ENV METHOD      aes-256-cfb
 ENV TIMEOUT     600
+ENV LOCAL_PORT    1080 
 ENV DNS_ADDRS    8.8.8.8,8.8.4.4
 ENV ARGS=
 
@@ -19,6 +20,7 @@ CMD exec ss-server \
       -k ${PASSWORD:-$(hostname)} \
       -m $METHOD \
       -t $TIMEOUT \
+      -l $LOCAL_PORT \
       -d $DNS_ADDRS \
       -u \
       $ARGS
