@@ -11,6 +11,7 @@ ENV DNS_ADDRS    8.8.8.8,8.8.4.4
 ENV ARGS=
 
 COPY ./ss-server /bin/
+RUN chmod 755 /bin/ss-server
 
 USER nobody
 
