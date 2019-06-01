@@ -23,7 +23,7 @@ RUN set -ex \
       mbedtls-dev \
       pcre-dev \
       asciidoc \
-      xmlto \
+      xmlto
  # Build & install
 RUN cd /tmp/ \
  && wget https://github.com/shadowsocks/shadowsocks-libev/releases/download/v3.2.5/shadowsocks-libev-3.2.5.tar.gz \
