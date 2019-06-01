@@ -1,9 +1,5 @@
-#
-# Dockerfile for shadowsocks-libev
-#
-
 FROM alpine
-LABEL maintainer="kev <noreply@datageek.info>, Sah <contact@leesah.name>"
+LABEL maintainer="yylbfyl@163.com"
 
 ENV SERVER_ADDR 0.0.0.0
 ENV SERVER_PORT 8388
@@ -13,7 +9,6 @@ ENV TIMEOUT     600
 ENV DNS_ADDRS    8.8.8.8,8.8.4.4
 ENV ARGS=
 
-COPY . /tmp/repo
 RUN set -ex \
  # Build environment setup
  && apk add --no-cache --virtual .build-deps \
@@ -27,19 +22,18 @@ RUN set -ex \
       linux-headers \
       mbedtls-dev \
       pcre-dev \
+      asciidoc \
+      xmlto \
  # Build & install
- && cd /tmp/repo \
- && ./autogen.sh \
- && ./configure --prefix=/usr --disable-documentation \
+RUN cd /tmp/ \
+ && wget https://github.com/shadowsocks/shadowsocks-libev/releases/download/v3.2.5/shadowsocks-libev-3.2.5.tar.gz \
+ && tar -xvzf shadowsocks-libev-3.2.5.tar.gz \
+ && cd /tmp/shadowsocks-libev-3.2.5 \
+ && ./configure \
+ && make \
  && make install \
- && apk del .build-deps \
- # Runtime dependencies setup
- && apk add --no-cache \
-      rng-tools \
-      $(scanelf --needed --nobanner /usr/bin/ss-* \
-      | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-      | sort -u) \
- && rm -rf /tmp/repo
+ && cp -a /tmp/shadowsocks-libev-3.2.5/src/ss-server /bin/ \
+ && rm -rf /tmp/*
 
 USER nobody
 
@@ -52,3 +46,4 @@ CMD exec ss-server \
       -d $DNS_ADDRS \
       -u \
       $ARGS
+
