@@ -11,7 +11,20 @@ ENV DNS_ADDRS    8.8.8.8,8.8.4.4
 ENV ARGS=
 
 COPY ./ss-server /bin/
-RUN chmod 755 /bin/ss-server
+RUN apk add --no-cache --virtual .build-deps \
+      autoconf \
+      automake \
+      build-base \
+      c-ares-dev \
+      libev-dev \
+      libtool \
+      libsodium-dev \
+      linux-headers \
+      mbedtls-dev \
+      pcre-dev \
+      asciidoc \
+      xmlto \
+&& chmod 755 /bin/ss-server
 
 USER nobody
 
